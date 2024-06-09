@@ -426,41 +426,6 @@ demo = {
 
     //var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     //var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
-
-
-    //var ctx = document.getElementById("chartBig1").getContext('2d');
-
-    var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-      gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
-      gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
-      gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
-    //var config = {
-    //  type: 'line',
-    //  data: {
-    //    labels: chart_labels,
-    //    datasets: [{
-    //      label: "My First dataset",
-    //      fill: true,
-    //      backgroundColor: gradientStroke,
-    //      borderColor: '#00d6b4',
-    //      borderWidth: 2,
-    //      borderDash: [],
-    //      borderDashOffset: 0.0,
-    //      pointBackgroundColor: '#00d6b4',
-    //      pointBorderColor: 'rgba(255,255,255,0)',
-    //      pointHoverBackgroundColor: '#00d6b4',
-    //      pointBorderWidth: 20,
-    //      pointHoverRadius: 4,
-    //      pointHoverBorderWidth: 15,
-    //      pointRadius: 4,
-    //      data: chart_data,
-    //    }]
-    //  },
-    //  options: gradientChartOptionsConfigurationWithTooltipPurple
-    //};
-      /*var myChartData = new Chart(ctx, config);*/
-
       //Referenciar el controlador de asp.net
       fetch("Home/VentasMensuales") //hacer la peticion al controlador
           .then((response) => { //obtener la respuesta
@@ -468,66 +433,95 @@ demo = {
           })    //obtener los datos de la respuesta
           .then((dataJson) => { //obtener los datos de la respuesta
               console.log(dataJson) //mostrar los datos en la consola
-              const labels = dataJson.map((fechaVenta) => { return fechaVenta.fechaVenta }) //obtener las fechas de las ventas
+              const chart_labels = dataJson.map((fechaVenta) => { return fechaVenta.fechaVenta }) //obtener las fechas de las ventas
               //obtner los valores de las ventas
-              const values = dataJson.map((totalVenta) => { return totalVenta.total })  //obtener los valores de las ventas
-              console.log(values)   //mostrar los valores en la consola
-              console.log(labels)   //mostrar las fechas en la consola
-              const data = {    //crear un objeto con los datos de la grafica
-                  labels: labels,       //agregar las fechas al objeto
-                  datasets: [{  //agregar los valores al objeto
-                      label: "Ventas",  //agregar la etiqueta al objeto
-                      fill: true,   //rellenar la grafica
-                      backgroundColor: gradientStroke,  //color de fondo
-                      borderColor: '#00d6b4',   //color del borde
-                      borderWidth: 2,   //ancho del borde
-                      borderDash: [],   //estilo del borde
-                      borderDashOffset: 0.0,    //offset del borde
-                      pointBackgroundColor: '#00d6b4',  //color del punto
-                      pointBorderColor: 'rgba(255,255,255,0)',  //color del borde del punto
-                      pointHoverBackgroundColor: '#00d6b4', //color del punto al pasar el mouse
-                      pointBorderWidth: 20, //ancho del borde del punto
-                      pointHoverRadius: 4,  //radio del punto al pasar el mouse
-                      pointHoverBorderWidth: 15,    //ancho del borde del punto al pasar el mouse
-                      pointRadius: 4,   //radio del punto
-                      data: values, //valores de la grafica
-                  }]    //fin de los datos
-                    
-              };    //fin del objeto
-              const config = {  //crear la configuracion de la grafica
-                  type: 'line', //tipo de grafica
-                  data: data,   //datos de la grafica
-                  options: gradientChartOptionsConfigurationWithTooltipGreen,   //opciones de la grafica
-              };    //fin de la configuracion
-              const context = document.getElementById("chartBig1").getContext("2d");    //obtener el contexto de la grafica
-              const graphbars = new Chart(context, config)  //crear la grafica
-              console.log(data) //mostrar los datos en la consola
-          })    //fin de la promesa
+              const chart_data = dataJson.map((totalVenta) => { return totalVenta.total })  //obtener los valores de las ventas
+              console.log(chart_labels) //mostrar las fechas en la consola
+              console.log(chart_data) //mostrar los valores en la consola
+
+
+    var ctx = document.getElementById("chartBig1").getContext('2d');
+
+    var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+      gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
+      gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
+      gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
+    var config = {
+      type: 'line',
+      data: {
+        labels: chart_labels,
+        datasets: [{
+          label: "Monto Total",
+          fill: true,
+          backgroundColor: gradientStroke,
+          borderColor: '#00d6b4',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          pointBackgroundColor: '#00d6b4',
+          pointBorderColor: 'rgba(255,255,255,0)',
+          pointHoverBackgroundColor: '#00d6b4',
+          pointBorderWidth: 20,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 15,
+          pointRadius: 4,
+          data: chart_data,
+        }]
+      },
+      options: gradientChartOptionsConfigurationWithTooltipPurple
+    };//fin de la configuracion
+   
+              const myChartData = new Chart(ctx, config);
+              $("#0").click(function () {  //evento click
+                  console.log(chart_data) //mostrar los datos en la consola)
+                  var data = myChartData.config.data;    //obtener la configuracion de la grafica
+                  data.datasets[0].data = chart_data;   //agregar los valores a la grafica
+                  data.labels = chart_labels; //agregar las fechas a la grafica
+                  myChartData.update(); //actualizar la grafica
+              }); //fin del evento click
+              $("#1").click(function () {
+                  fetch('Home/VentasTrimestrales')
+                  .then((response) => {
+                            return response.ok ? response.json() : Promise.reject(response);
+                        })
+                        .then((dataJson) => {
+                            const chart_labels = dataJson.map((fechaVenta) => { return fechaVenta.fechaVenta })
+                            const chart_data = dataJson.map((totalVenta) => { return totalVenta.total })
+                            console.log(chart_labels)
+                            console.log(chart_data)
+                            var data = myChartData.config.data;
+                            data.datasets[0].data = chart_data;
+                            data.labels = chart_labels;
+                            myChartData.update();
+                        });// fin de la promesa
+              });
+              $("#2").click(function () {
+                  fetch('Home/VentasSemanales')
+                      .then((response) => {
+                          return response.ok ? response.json() : Promise.reject(response);
+                      })
+                      .then((dataJson) => {
+                          const chart_labels = dataJson.map((fechaVenta) => { return fechaVenta.fechaVenta })
+                          const chart_data = dataJson.map((totalVenta) => { return totalVenta.total })
+                      
+                          var data = myChartData.config.data;
+                          data.datasets[0].data = chart_data;
+                          data.labels = chart_labels;
+                          myChartData.update();
+                      });// fin de la promesa
+              });
+   })    //fin de la promesa
+
+
+      
 
 
 
 
-    $("#0").click(function() {  //evento click
-        var data = graphbars.config;    //obtener la configuracion de la grafica
-      data.datasets[0].data = values;   //agregar los valores a la grafica
-      data.labels = labels; //agregar las fechas a la grafica
-        graphbars.update(); //actualizar la grafica
-    }); //fin del evento click
-    //$("#1").click(function() {
-    //  var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
-    //  var data = myChartData.config.data;
-    //  data.datasets[0].data = chart_data;
-    //  data.labels = chart_labels;
-    //  myChartData.update();
-    //});
+    
 
-    //$("#2").click(function() {
-    //  var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
-    //  var data = myChartData.config.data;
-    //  data.datasets[0].data = chart_data;
-    //  data.labels = chart_labels;
-    //  myChartData.update();
-      //});
+    
 
 
 
