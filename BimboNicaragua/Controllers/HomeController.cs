@@ -15,27 +15,27 @@ namespace BimboNicaragua.Controllers
             _context = context;
         }
 
-        public IActionResult VentasMensuales()
+        public IActionResult VentasMensuales()  //Metodo para obtener las ventas mensuales
         {
             DateTime fechaV = DateTime.Now; //Obtener hasta la fecha actual
-            DateTime f_Año = fechaV.AddMonths(-12);
-            List<BModelsVenta> InfVentas = _context.Ventas
-            .Where(v => v.FechaVenta.Date >= f_Año.Date && v.FechaVenta.Date <= fechaV)
-            .GroupBy(v => new { v.FechaVenta.Year, v.FechaVenta.Month })
-            .Select(g => new {
-                Year = g.Key.Year,
-                Month = g.Key.Month,
-                Total = g.Sum(v => v.MontoTotal)
-            })
-            .AsEnumerable() // Fetch data from the database
-             .Select(g => new BModelsVenta
+            DateTime f_Año = fechaV.AddMonths(-12); //Obtener la fecha de hace un año
+            List<BModelsVenta> InfVentas = _context.Ventas  //Consulta a la base de datos
+            .Where(v => v.FechaVenta.Date >= f_Año.Date && v.FechaVenta.Date <= fechaV) //Filtrar por fecha
+            .GroupBy(v => new { v.FechaVenta.Year, v.FechaVenta.Month })    //Agrupar por año y mes
+            .Select(g => new {  //Seleccionar los datos
+                Year = g.Key.Year,  //Año
+                Month = g.Key.Month,    //Mes
+                Total = g.Sum(v => v.MontoTotal)    //Total de ventas
+            })  //Fin de Select
+            .AsEnumerable() //Convertir a una lista enumerable
+             .Select(g => new BModelsVenta //seleccionar los datos
             {
-            fechaVenta = new DateTime(g.Year, g.Month, 1).ToString("MMMM yyyy", new CultureInfo("es-ES")),
-                 Total = g.Total
+            fechaVenta = new DateTime(g.Year, g.Month, 1).ToString("MMMM yyyy", new CultureInfo("es-ES")),  //Fecha de la venta 
+                 Total = g.Total    //Total de ventas
             })
-            .OrderBy(v => DateTime.ParseExact(v.fechaVenta, "MMMM yyyy", new CultureInfo("es-ES")))
-            .ToList();
-            return StatusCode(StatusCodes.Status200OK, InfVentas);
+            .OrderBy(v => DateTime.ParseExact(v.fechaVenta, "MMMM yyyy", new CultureInfo("es-ES"))) //Ordenar por fecha
+            .ToList();  //Convertir a lista
+            return StatusCode(StatusCodes.Status200OK, InfVentas);  //Retornar la lista
 
         }//Fin de VentasTrimestrales
         public IActionResult Index()

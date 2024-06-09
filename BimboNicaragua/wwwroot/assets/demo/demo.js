@@ -462,57 +462,57 @@ demo = {
       /*var myChartData = new Chart(ctx, config);*/
 
       //Referenciar el controlador de asp.net
-      fetch("Home/VentasMensuales")
-          .then((response) => {
-              return response.ok ? response.json() : Promise.reject(response);
-          })
-          .then((dataJson) => {
-              console.log(dataJson)
-              const labels = dataJson.map((fechaVenta) => { return fechaVenta.fechaVenta })
+      fetch("Home/VentasMensuales") //hacer la peticion al controlador
+          .then((response) => { //obtener la respuesta
+              return response.ok ? response.json() : Promise.reject(response);  //validar si la respuesta es correcta
+          })    //obtener los datos de la respuesta
+          .then((dataJson) => { //obtener los datos de la respuesta
+              console.log(dataJson) //mostrar los datos en la consola
+              const labels = dataJson.map((fechaVenta) => { return fechaVenta.fechaVenta }) //obtener las fechas de las ventas
               //obtner los valores de las ventas
-              const values = dataJson.map((totalVenta) => { return totalVenta.total })
-              console.log(values)
-              console.log(labels)
-              const data = {
-                  labels: labels,
-                  datasets: [{
-                      label: "Ventas",
-                      fill: true,
-                      backgroundColor: gradientStroke,
-                      borderColor: '#00d6b4',
-                      borderWidth: 2,
-                      borderDash: [],
-                      borderDashOffset: 0.0,
-                      pointBackgroundColor: '#00d6b4',
-                      pointBorderColor: 'rgba(255,255,255,0)',
-                      pointHoverBackgroundColor: '#00d6b4',
-                      pointBorderWidth: 20,
-                      pointHoverRadius: 4,
-                      pointHoverBorderWidth: 15,
-                      pointRadius: 4,
-                      data: values,
-                  }]
-
-              };
-              const config = {
-                  type: 'line',
-                  data: data,
-                  options: gradientChartOptionsConfigurationWithTooltipGreen,
-              };
-              const context = document.getElementById("chartBig1").getContext("2d");
-              const graphbars = new Chart(context, config)
-              console.log(data)
-          })
-
-
+              const values = dataJson.map((totalVenta) => { return totalVenta.total })  //obtener los valores de las ventas
+              console.log(values)   //mostrar los valores en la consola
+              console.log(labels)   //mostrar las fechas en la consola
+              const data = {    //crear un objeto con los datos de la grafica
+                  labels: labels,       //agregar las fechas al objeto
+                  datasets: [{  //agregar los valores al objeto
+                      label: "Ventas",  //agregar la etiqueta al objeto
+                      fill: true,   //rellenar la grafica
+                      backgroundColor: gradientStroke,  //color de fondo
+                      borderColor: '#00d6b4',   //color del borde
+                      borderWidth: 2,   //ancho del borde
+                      borderDash: [],   //estilo del borde
+                      borderDashOffset: 0.0,    //offset del borde
+                      pointBackgroundColor: '#00d6b4',  //color del punto
+                      pointBorderColor: 'rgba(255,255,255,0)',  //color del borde del punto
+                      pointHoverBackgroundColor: '#00d6b4', //color del punto al pasar el mouse
+                      pointBorderWidth: 20, //ancho del borde del punto
+                      pointHoverRadius: 4,  //radio del punto al pasar el mouse
+                      pointHoverBorderWidth: 15,    //ancho del borde del punto al pasar el mouse
+                      pointRadius: 4,   //radio del punto
+                      data: values, //valores de la grafica
+                  }]    //fin de los datos
+                    
+              };    //fin del objeto
+              const config = {  //crear la configuracion de la grafica
+                  type: 'line', //tipo de grafica
+                  data: data,   //datos de la grafica
+                  options: gradientChartOptionsConfigurationWithTooltipGreen,   //opciones de la grafica
+              };    //fin de la configuracion
+              const context = document.getElementById("chartBig1").getContext("2d");    //obtener el contexto de la grafica
+              const graphbars = new Chart(context, config)  //crear la grafica
+              console.log(data) //mostrar los datos en la consola
+          })    //fin de la promesa
 
 
-    $("#0").click(function() {
-        var data = graphbars.config;
-      data.datasets[0].data = values;
-      data.labels = labels;
-        graphbars.update();
-    });
+
+
+    $("#0").click(function() {  //evento click
+        var data = graphbars.config;    //obtener la configuracion de la grafica
+      data.datasets[0].data = values;   //agregar los valores a la grafica
+      data.labels = labels; //agregar las fechas a la grafica
+        graphbars.update(); //actualizar la grafica
+    }); //fin del evento click
     //$("#1").click(function() {
     //  var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
     //  var data = myChartData.config.data;
