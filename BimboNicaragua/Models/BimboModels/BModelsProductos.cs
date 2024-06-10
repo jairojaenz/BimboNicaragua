@@ -6,5 +6,7 @@
         public string NombreProducto { get; set; }
 
         public int TotalVentas { get; set; }
+
+        public string categoria { get; set; }
     }
 }

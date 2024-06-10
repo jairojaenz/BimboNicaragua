@@ -74,8 +74,8 @@ namespace BimboNicaragua.Controllers
                 .GroupBy(v => new { Week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(v.FechaVenta, CalendarWeekRule.FirstDay, DayOfWeek.Monday) })
                 .Select(g => new BModelsVenta
                 {
-                 fechaVenta = $"Semana {g.Key.Week}",
-                 Total = (Int32)g.Sum(v => v.MontoTotal),
+                    fechaVenta = $"Semana {g.Key.Week}",
+                    Total = (Int32)g.Sum(v => v.MontoTotal),
                 })
                 .OrderBy(v => int.Parse(v.fechaVenta.Split(' ')[1]))
                 .ToList();
@@ -92,7 +92,7 @@ namespace BimboNicaragua.Controllers
 
             var listaProductosMasVendidos = query.Take(5).ToList();
 
-            return StatusCode(StatusCodes.Status200OK,listaProductosMasVendidos);
+            return StatusCode(StatusCodes.Status200OK, listaProductosMasVendidos);
         }
         public IActionResult ObtenerMejoresClientes()
         {
@@ -106,6 +106,38 @@ namespace BimboNicaragua.Controllers
 
             return StatusCode(StatusCodes.Status200OK, result);
         }
+
+        public IActionResult ObtenerProductosPorCategoria()
+        {
+            var result = (from producto in _context.Productos
+                          group producto by producto.Categoria into g
+                          select new { Categoria = g.Key, Cantidad = g.Count() })
+                         .ToList();
+
+            return StatusCode(StatusCodes.Status200OK, result);
+        }
+
+        public IActionResult ObtenerProductosUnicos()
+        {
+            string query = @"
+            WITH ProductosUnicos AS (
+            SELECT Producto_ID, NombreProducto, Descripcion, Precio, Categoria,
+            ROW_NUMBER() OVER(PARTITION BY NombreProducto ORDER BY NombreProducto) AS rn
+            FROM Productos
+            )
+            SELECT Producto_ID, NombreProducto, Descripcion, Precio, Categoria
+             FROM ProductosUnicos
+             WHERE rn = 1
+             ORDER BY NombreProducto;
+            ";
+
+            var productosUnicos = _context.Productos.FromSqlRaw(query).ToList();
+
+            return StatusCode(StatusCodes.Status200OK, productosUnicos);
+        }
+
+
+
 
 
 
