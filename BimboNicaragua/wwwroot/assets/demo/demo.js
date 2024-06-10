@@ -348,7 +348,19 @@ demo = {
         }]
       }
     };
-
+      fetch("Home/GetProductosMasVendidos") //hacer la peticion al controlador
+          .then((response) => { //obtener la respuesta
+              return response.ok ? response.json() : Promise.reject(response);  //validar si la respuesta es correcta
+          })    //obtener los datos de la respuesta
+          .then((dataJson) => { //obtener los datos de la respuesta
+              console.log(dataJson) //mostrar los datos en la consola
+              const chart_labels = dataJson.map((producto) => { return producto.nombreProducto }) //obtener las fechas de las ventas
+              //obtner los valores de las ventas
+              const chart_data = dataJson.map((producto) => { return producto.totalVendido })  //obtener los valores de las ventas
+              //Sumar el total de productos vendidos
+              const totalProductosVendidos = chart_data.reduce((total, cantidad) => { return total + cantidad }, 0)
+              //mostrar el resulatdo de la suma en el html
+              document.getElementById("totalProductosVendidos").innerHTML = totalProductosVendidos
     var ctx = document.getElementById("chartLinePurple").getContext("2d");
 
       var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
@@ -357,37 +369,40 @@ demo = {
       gradientStroke.addColorStop(0.4, 'rgba(66,145,121,0.0)'); //green colors
       gradientStroke.addColorStop(0, 'rgba(66,145,121,0)'); //green colors
 
-    var data = {
-      labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-      datasets: [{
-        label: "Data",
-        fill: true,
-        backgroundColor: gradientStroke,
-          borderColor: '#00d6b4',
-        borderWidth: 2,
-        borderDash: [],
-        borderDashOffset: 0.0,
-          pointBackgroundColor: '#00d6b4',
-        pointBorderColor: 'rgba(255,255,255,0)',
-          pointHoverBackgroundColor: '#00d6b4',
-        pointBorderWidth: 20,
-        pointHoverRadius: 4,
-        pointHoverBorderWidth: 15,
-        pointRadius: 4,
-        data: [80, 100, 70, 80, 120, 80],
-      }]
-    };
+           var config = {
+               type: 'line',
+               data: {
+                   labels: chart_labels,
+                   datasets: [{
+                       label: "Total Vendido",
+                       fill: true,
+                       backgroundColor: gradientStroke,
+                       borderColor: '#00d6b4',
+                       borderWidth: 2,
+                       borderDash: [],
+                       borderDashOffset: 0.3,
+                       pointBackgroundColor: '#00d6b4',
+                       pointBorderColor: 'rgba(255,255,255,0)',
+                       pointHoverBackgroundColor: '#00d6b4',
+                       pointBorderWidth: 20, 
+                       pointHoverRadius: 4,
+                       pointHoverBorderWidth: 10,
+                       pointRadius: 4,
+                       data: chart_data,
+                   }]
+               },
+               options: gradientBarChartConfiguration
 
-    var myChart = new Chart(ctx, {
-      type: 'line',
-      data: data,
-      options: gradientChartOptionsConfigurationWithTooltipGreen
-    });
+              };//fin de la configuracion
+
+
+              const myChartData = new Chart(ctx, config);
+    })    //fin de la promesa
 
 
     var ctxGreen = document.getElementById("chartLineGreen").getContext("2d");
 
-    var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+    var gradientStroke = ctxGreen.createLinearGradient(0, 230, 0, 50);
 
     gradientStroke.addColorStop(1, 'rgba(6,134,121,0.15)');
     gradientStroke.addColorStop(0.4, 'rgba(66,145,121,0.0)'); //green colors
@@ -447,29 +462,31 @@ demo = {
       gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
       gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
       gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
-    var config = {
-      type: 'line',
-      data: {
-        labels: chart_labels,
-        datasets: [{
-          label: "Monto Total",
-          fill: true,
-          backgroundColor: gradientStroke,
-          borderColor: '#00d6b4',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: '#00d6b4',
-          pointBorderColor: 'rgba(255,255,255,0)',
-          pointHoverBackgroundColor: '#00d6b4',
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: 4,
-          data: chart_data,
-        }]
-      },
-      options: gradientChartOptionsConfigurationWithTooltipPurple
+              var config = {
+                  type: 'line',
+                  data: {
+                      labels: chart_labels,
+                      datasets: [{
+                          label: "Monto Total",
+                          fill: true,
+                          backgroundColor: gradientStroke,
+                          borderColor: '#00d6b4',
+                          borderWidth: 2,
+                          borderDash: [],
+                          borderDashOffset: 0.0,
+                          pointBackgroundColor: '#00d6b4',
+                          pointBorderColor: 'rgba(255,255,255,0)',
+                          pointHoverBackgroundColor: '#00d6b4',
+                          pointBorderWidth: 20,
+                          pointHoverRadius: 4,
+                          pointHoverBorderWidth: 15,
+                          pointRadius: 4,
+                          data: chart_data,
+                      }]
+                  },
+                  options: gradientChartOptionsConfigurationWithTooltipPurple,
+    
+
     };//fin de la configuracion
    
               const myChartData = new Chart(ctx, config);
@@ -504,7 +521,6 @@ demo = {
                       .then((dataJson) => {
                           const chart_labels = dataJson.map((fechaVenta) => { return fechaVenta.fechaVenta })
                           const chart_data = dataJson.map((totalVenta) => { return totalVenta.total })
-                      
                           var data = myChartData.config.data;
                           data.datasets[0].data = chart_data;
                           data.labels = chart_labels;

@@ -82,6 +82,33 @@ namespace BimboNicaragua.Controllers
             return StatusCode(StatusCodes.Status200OK, listaVentas);
         }
 
+        public IActionResult GetProductosMasVendidos()
+        {
+            var query = (from dv in _context.DetalleVenta
+                         join p in _context.Productos on dv.ProductoId equals p.ProductoId
+                         group dv by p.NombreProducto into g
+                         select new { NombreProducto = g.Key, TotalVendido = g.Sum(x => x.Cantidad) })
+                        .OrderByDescending(x => x.TotalVendido);
+
+            var listaProductosMasVendidos = query.Take(5).ToList();
+
+            return StatusCode(StatusCodes.Status200OK,listaProductosMasVendidos);
+        }
+        public IActionResult ObtenerMejoresClientes()
+        {
+            var result = (from venta in _context.Ventas
+                          join cliente in _context.Clientes on venta.ClienteId equals cliente.ClienteId
+                          group venta by cliente.NombreCliente into g
+                          select new { NombreCliente = g.Key, TotalCompras = g.Sum(x => x.MontoTotal) })
+                         .OrderByDescending(x => x.TotalCompras)
+                         .Take(5)
+                         .ToList();
+
+            return StatusCode(StatusCodes.Status200OK, result);
+        }
+
+
+
         public IActionResult Index()
         {
             return View();
