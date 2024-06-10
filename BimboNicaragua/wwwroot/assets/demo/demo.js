@@ -658,8 +658,6 @@ demo = {
 
                 });// fin de la configuracion
             })    //fin de la promesa
-
-        // Realiza una solicitud HTTP a tu endpoint:
         fetch('Home/ObtenerProductosUnicos')
             .then((response) => { //obtener la respuesta
                 return response.ok ? response.json() : Promise.reject(response);  //validar si la respuesta es correcta
@@ -684,8 +682,6 @@ demo = {
                     document.getElementById("productosUnicos").appendChild(fila) //agregar la fila a la tabla
                 }) //fin del forEach
             })    //fin de la promesa
-
-
     },//fin de la funcion initDashboardPageCharts
 
     showNotification: function (from, align) {
