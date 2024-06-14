@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="~/assets/img/R.png">
     <title>
-        Sistema de gestion de ventas PanPlus Bimbo
+        Sistema de gestión de ventas PanPlus Bimbo
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
@@ -31,7 +31,7 @@
     <link href="~/assets/css/nucleo-icons.css" rel="stylesheet" />
     <!-- CSS Files -->
     <!--Agregar la hoja de estilo boostrap.css que esta en assets-->
-    <link href="~/assets/css/black-dashboard.css" rel="stylesheet"/>
+    <link href="~/assets/css/black-dashboard.css" rel="stylesheet" />
 
 </head>
 
@@ -76,7 +76,7 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <h4 class="fw-bold">Sistema de gestion de ventas PanPlus</h4>
+                        <h4 class="fw-bold">Sistema de gestión de ventas PanPlus</h4>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -291,40 +291,7 @@
                     }, 1000);
                 });
 
-                $('.switch-change-color input').on("switchChange.bootstrapSwitch", function () {
-                    var $btn = $(this);
-
-                    if (white_color == true) {
-
-                        $('body').addClass('change-background');
-                        setTimeout(function () {
-                            $('body').removeClass('change-background');
-                            $('body').removeClass('white-content');
-                        }, 900);
-                        white_color = false;
-                    } else {
-
-                        $('body').addClass('change-background');
-                        setTimeout(function () {
-                            $('body').removeClass('change-background');
-                            $('body').addClass('white-content');
-                        }, 900);
-
-                        white_color = true;
-                    }
-
-
-                });
-
-                $('.light-badge').click(function () {
-                    $('body').addClass('white-content');
-                });
-
-                $('.dark-badge').click(function () {
-                    $('body').removeClass('white-content');
-                });
             });
-        });
     </script>
     <script>
         $(document).ready(function () {
@@ -332,16 +299,39 @@
             demo.initDashboardPageCharts();
 
         });
-    </script>
-    <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-    <script>
-        window.TrackJS &&
-            TrackJS.install({
-                token: "ee6fab19c5a04ac1a32a645abde4613a",
-                application: "black-dashboard-free"
+
+        $(document).ready(function () {
+            // Verificar y aplicar el tema guardado al cargar la página
+            var white_color = localStorage.getItem('white_color') === 'true';
+
+            if (white_color) {
+                $('body').addClass('white-content');
+            } else {
+                $('body').removeClass('white-content');
+            }
+
+            // Evento para el switch que cambia el color
+            $('.switch-change-color input').on("click", function () {
+                $('body').toggleClass('white-content');
+                white_color = !$('body').hasClass('white-content');
+                localStorage.setItem('white_color', white_color);
             });
+
+            // Botón para tema claro
+            $('.light-badge').click(function () {
+                $('body').addClass('white-content');
+                localStorage.setItem('white_color', 'true');
+            });
+
+            // Botón para tema oscuro
+            $('.dark-badge').click(function () {
+                $('body').removeClass('white-content');
+                localStorage.setItem('white_color', 'false');
+            });
+        });
+
     </script>
-  
+
     @RenderSection("scripts", required: false)
 </body>
 

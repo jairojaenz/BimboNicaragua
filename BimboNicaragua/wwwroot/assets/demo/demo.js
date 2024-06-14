@@ -467,49 +467,6 @@ demo = {
                 });
 
             });
-
-        /*
-                var ctxGreen = document.getElementById("chartLineGreen").getContext("2d");
-        
-                var gradientStroke = ctxGreen.createLinearGradient(0, 230, 0, 50);
-        
-                gradientStroke.addColorStop(1, 'rgba(6,134,121,0.15)');
-                gradientStroke.addColorStop(0.4, 'rgba(66,145,121,0.0)'); //green colors
-                gradientStroke.addColorStop(0, 'rgba(66,145,121,0)'); //green colors
-        
-                var data = {
-                    labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
-                    datasets: [{
-                        label: "My First dataset",
-                        fill: true,
-                        backgroundColor: gradientStroke,
-                        borderColor: '#00d6b4',
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: '#00d6b4',
-                        pointBorderColor: 'rgba(255,255,255,0)',
-                        pointHoverBackgroundColor: '#00d6b4',
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: [90, 27, 60, 12, 80],
-                    }]
-                };
-        
-                var myChart = new Chart(ctxGreen, {
-                    type: 'line',
-                    data: data,
-                    options: gradientChartOptionsConfigurationWithTooltipGreen
-        
-                });
-        */
-
-
-
-        //var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-        //var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
         //Referenciar el controlador de asp.net
         fetch("Home/VentasMensuales") //hacer la peticion al controlador
             .then((response) => { //obtener la respuesta
@@ -554,7 +511,7 @@ demo = {
                             data: chart_data,
                         }]
                     },
-                     
+
                     options: {
                         ...gradientChartOptionsConfigurationWithTooltipPurple,
                         scales: {
@@ -683,22 +640,4 @@ demo = {
                 }) //fin del forEach
             })    //fin de la promesa
     },//fin de la funcion initDashboardPageCharts
-
-    showNotification: function (from, align) {
-        color = Math.floor((Math.random() * 4) + 1);
-
-        $.notify({
-            icon: "tim-icons icon-bell-55",
-            message: "Welcome to <b>Black Dashboard</b> - a beautiful freebie for every web developer."
-
-        }, {
-            type: type[color],
-            timer: 8000,
-            placement: {
-                from: from,
-                align: align
-            }
-        });
-    }
-
 };
