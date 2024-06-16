@@ -615,6 +615,7 @@ demo = {
 
                 });// fin de la configuracion
             })    //fin de la promesa
+/***********************************************************************************************************************************/
         fetch('Home/ObtenerProductosUnicos')
             .then((response) => { //obtener la respuesta
                 return response.ok ? response.json() : Promise.reject(response);  //validar si la respuesta es correcta
@@ -639,5 +640,50 @@ demo = {
                     document.getElementById("productosUnicos").appendChild(fila) //agregar la fila a la tabla
                 }) //fin del forEach
             })    //fin de la promesa
+
+        /***********************************************************************************************************************************/
+        fetch('CMI_/Tabla_CMI')
+        .then((response) => { //obtener la respuesta
+                return response.ok ? response.json() : Promise.reject(response);  //validar si la respuesta es correcta
+            })    //obtener los datos de la respuesta
+            .then((dataJson) => { //obtener los datos de la respuesta
+                console.log(dataJson) //mostrar los datos en la consola
+                //Agregar cada una de las filas y columnas a la tabla
+                dataJson.forEach((cmi) => {
+                    const fila = document.createElement("tr") //crear una fila
+                    const columna1 = document.createElement("td") //crear una columna
+                    columna1.innerHTML = cmi.nombreDelObjetivo//agregar el nombre del producto a la columna
+
+                    const columna2 = document.createElement("td") //crear una columna
+                    columna2.innerHTML = cmi.nombreDelIndicador //agregar la categoria a la columna
+
+                    const columna3 = document.createElement("td") //crear una columna
+                    columna3.innerHTML = cmi.tipoDeIndicador //agregar la categoria a la columna
+
+                    const columna4 = document.createElement("td") //crear una columna
+                    columna4.innerHTML = cmi.nombreDeLaPerspectiva //agregar el precio a la columna
+
+                    const columna5 = document.createElement("td") //crear una columna
+                    columna5.innerHTML = cmi.nombreDelCMI //agregar la categoria a la columna
+
+                    const columna6 = document.createElement("td") //crear una columna
+                    columna6.innerHTML = cmi.descripcionDelCMI//agregar la descripcion a la columna
+
+                    const columna7 = document.createElement("td") //crear una columna
+                    columna7.innerHTML = cmi.periodoDelCMI //agregar la categoria a la columna
+
+                    fila.appendChild(columna1) //agregar la columna a la fila
+                    fila.appendChild(columna2) //agregar la columna a la fila
+                    fila.appendChild(columna3) //agregar la columna a la fila
+                    fila.appendChild(columna4) //agregar la columna a la fila
+                    fila.appendChild(columna5) //agregar la columna a la fila
+                    fila.appendChild(columna6) //agregar la columna a la fila
+                    fila.appendChild(columna7) //agregar la columna a la fila
+                    document.getElementById("tablacmi").appendChild(fila) //agregar la fila a la tabla
+                }) //fin del forEach
+           })    //fin de la promesa
+
+        
     },//fin de la funcion initDashboardPageCharts
+ 
 };

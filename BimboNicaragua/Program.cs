@@ -9,6 +9,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PanPlusBimboContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("connectSQLBimbo")));
 
+builder.Services.AddDbContext<CMI_BimboContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("connectSQLCMI_Bimbo")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

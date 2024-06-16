@@ -136,11 +136,6 @@ namespace BimboNicaragua.Controllers
             return StatusCode(StatusCodes.Status200OK, productosUnicos);
         }
 
-
-
-
-
-
         public IActionResult Index()
         {
             return View();
