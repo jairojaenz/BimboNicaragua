@@ -60,7 +60,7 @@ data2 = pd.read_sql(query2, conn)
 with open(output_file_path, 'w', encoding='utf-8') as file:
     # Muestra las primeras filas del DataFrame de la primera consulta en formato HTML
     file.write("<h2>Datos Completos - Primeras 10 filas</h2>")
-    file.write(data1.head(10).to_html(index=False, classes='table table-striped table-bordered'))
+    file.write(data1.head(10).to_html(index=False, classes='table table-striped table-responsive'))
 
     # Resumen estadístico de las columnas numéricas de la primera consulta
     file.write(data1.describe().to_html(index=False, classes='table table-striped table-bordered'))
