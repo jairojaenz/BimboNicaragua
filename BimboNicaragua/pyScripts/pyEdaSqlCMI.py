@@ -14,16 +14,21 @@ if len(sys.argv) > 1:
 else:
     print("Debe proporcionar la ruta del archivo de salida como argumento del script.")
     sys.exit(1)
-server = 'DESKTOP-7755T4M\\SQLEXPRESS'  # Nombre del servidor SQL Server
-database = 'CMI_Bimbo'  # Nombre de la base de datos
-driver = 'ODBC Driver 17 for SQL Server'
+server = 'relacionalbimbo.database.windows.net'
+database = 'CMI_Bimbo'
+username = 'relbimbo'
+password = 'BDS22024Grupo#2'
+driver = '{ODBC Driver 17 for SQL Server}'
 try:
-    conn = pyodbc.connect(
-        f'DRIVER={{{driver}}};'
-        f'SERVER={server};'
-        f'DATABASE={database};'
-        'Trusted_Connection=yes;'
-    )
+	conn = pyodbc.connect(
+		f'DRIVER={driver};'
+		f'SERVER={server};'
+		f'DATABASE={database};'
+		f'UID={username};'
+		f'PWD={password};'
+        f'PORT=1433;'
+	)
+    
 except Exception as e:
     with open(output_file_path, 'w', encoding='utf-8') as file:
         file.write(f"Error al conectar a la base de datos: {e}")
@@ -37,16 +42,23 @@ exec datosCmi
 # Lee los datos en un DataFrame de pandas desde la base de datos
 data = pd.read_sql(query, conn)
 
-server2='DESKTOP-7755T4M\\SQLEXPRESS'
-database2='DimencionesPanPlus'
-driver2='ODBC Driver 17 for SQL Server'
+#server2='localhost'
+#database2='DimencionesPanPlus'
+#driver2='ODBC Driver 17 for SQL Server'
+server = 'relacionalbimbo.database.windows.net'
+database2 = 'DimensionesPanPlus'
+username = 'relbimbo'
+password = 'BDS22024Grupo#2'
+driver = '{ODBC Driver 17 for SQL Server}'
 
 try:
-	conn2 = pyodbc.connect(
-		f'DRIVER={{{driver2}}};'
-		f'SERVER={server2};'
+    conn2 = pyodbc.connect(
+        f'DRIVER={driver};'
+		f'SERVER={server};'
 		f'DATABASE={database2};'
-		'Trusted_Connection=yes;'
+		f'UID={username};'
+		f'PWD={password};'
+		f'PORT=1433;'
 	)
 except Exception as e:
     with open(output_file_path, 'w', encoding='utf-8') as file:

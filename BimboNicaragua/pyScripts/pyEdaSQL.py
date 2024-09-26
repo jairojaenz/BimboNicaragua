@@ -17,18 +17,22 @@ else:
     sys.exit(1)
 
 # Configuración de la conexión a la base de datos
-server = 'DESKTOP-7755T4M\\SQLEXPRESS'  # Nombre del servidor SQL Server
-database = 'DimencionesPanPlus'  # Nombre de la base de datos
-driver = 'ODBC Driver 17 for SQL Server'  # Controlador ODBC utilizado para la conexión
+server = 'relacionalbimbo.database.windows.net'
+database2 = 'DimensionesPanPlus'
+username = 'relbimbo'
+password = 'BDS22024Grupo#2'
+driver = '{ODBC Driver 17 for SQL Server}'
 
 # Intenta establecer la conexión utilizando autenticación de Windows
 try:
     conn = pyodbc.connect(
-        f'DRIVER={{{driver}}};'
-        f'SERVER={server};'
-        f'DATABASE={database};'
-        'Trusted_Connection=yes;'
-    )
+        f'DRIVER={driver};'
+		f'SERVER={server};'
+		f'DATABASE={database2};'
+		f'UID={username};'
+		f'PWD={password};'
+		f'PORT=1433;'
+	)
 except Exception as e:
     with open(output_file_path, 'w', encoding='utf-8') as file:
         file.write(f"Error al conectar a la base de datos: {e}")
